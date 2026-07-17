@@ -1,0 +1,32 @@
+services:
+  kstudio:
+    build: .
+    container_name: kstudio_app
+    ports:
+      - "127.0.0.1:3003:5000"
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - kstudio_uploads:/app/server/uploads
+  db:
+    image: postgres:15-alpine
+    container_name: kstudio_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    # Puerto 5432 ya NO se publica al host: la base solo es accesible
+    # dentro de la red interna de Docker (la app la alcanza por 'db').
+    # Si en algún momento necesitas conectarte desde el propio servidor,
+    # descomenta la siguiente línea (solo escucha en localhost, no en internet):
+    # ports:
+    #   - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+  kstudio_uploads:
