@@ -8,7 +8,7 @@ import { useContent } from '../ContentContext';
 export default function Nosotros() {
   const { content } = useContent();
   // Circadian state for the interactive simulator
-  const [circadianTime, setCircadianTime] = useState(12); // hours: 6 to 22
+  const [circadianTime, setCircadianTime] = useState(12); // hours: 2 to 23
 
   const values: ValueItem[] = [
     { name: 'Calidad', description: 'Búsqueda incansable de la perfección técnica y estética en cada detalle lumínico.', iconName: 'Award' },
@@ -35,50 +35,81 @@ export default function Nosotros() {
   };
 
   // Get circadian parameters based on slider hour
+  // Curva horaria continua siguiendo el arco solar: ámbar en madrugada,
+  // pico frío de 8000 K al mediodía, y descenso a 1800 K en la noche.
+  const KELVIN_BY_HOUR: Record<number, number> = {
+    2: 1800, 3: 1900, 4: 2000, 5: 2200, 6: 2700, 7: 3500, 8: 4500, 9: 5500,
+    10: 6500, 11: 7500, 12: 8000, 13: 8000, 14: 7500, 15: 6500, 16: 5500,
+    17: 4500, 18: 3500, 19: 2700, 20: 2200, 21: 2000, 22: 1900, 23: 1800
+  };
+
+  // Aproximación del color de cuerpo negro (tono real de la luz) según Kelvin
+  const kelvinToRGB = (k: number) => {
+    const t = k / 100;
+    let r: number, g: number, b: number;
+    r = t <= 66 ? 255 : Math.min(255, Math.max(0, 329.7 * Math.pow(t - 60, -0.1332)));
+    g = t <= 66
+      ? Math.min(255, Math.max(0, 99.47 * Math.log(t) - 161.12))
+      : Math.min(255, Math.max(0, 288.12 * Math.pow(t - 60, -0.0755)));
+    b = t >= 66 ? 255 : t <= 19 ? 0 : Math.min(255, Math.max(0, 138.52 * Math.log(t - 10) - 305.04));
+    return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+  };
+
   const getCircadianData = (hour: number) => {
-    if (hour >= 6 && hour < 10) {
+    const kelvin = KELVIN_BY_HOUR[hour] ?? 4000;
+    const { r, g, b } = kelvinToRGB(kelvin);
+    const isNight = hour < 5 || hour >= 20;
+    const previewStyle = {
+      background: `rgba(${r}, ${g}, ${b}, ${isNight ? 0.12 : 0.22})`,
+      boxShadow: `inset 0 0 60px rgba(${r}, ${g}, ${b}, ${isNight ? 0.35 : 0.5})`
+    };
+    if (isNight) {
+      return {
+        label: hour < 5 ? 'Madrugada / Sueño profundo' : 'Noche / Descanso (Fase Melatonina)',
+        kelvin,
+        temp: `${kelvin} K`,
+        biological: 'Secreción activa de Melatonina (Hormona del Sueño). Regeneración celular profunda.',
+        color: 'from-indigo-950/20 to-indigo-900/10',
+        textColor: 'text-night-accent',
+        icon: <Moon size={24} className="text-indigo-400" />,
+        desc: 'Luz ámbar ultra cálida indirecta. Cero emisiones de luz azul para asegurar la calidad del ciclo de sueño.',
+        previewStyle
+      };
+    } else if (hour < 10) {
       return {
         label: 'Amanecer / Mañana',
-        temp: '3200 K° - 4500 K°',
+        kelvin,
+        temp: `${kelvin} K`,
         biological: 'Incremento de Cortisol, inhibición de Melatonina. Despertar natural y aumento de energía.',
         color: 'from-amber-100 to-amber-200/50',
         textColor: 'text-amber-800',
         icon: <Sun size={24} className="text-amber-500 animate-spin-slow" />,
-        desc: 'La luz cálida-neutra con componente azul moderado estimula el despertar fisiológico gradual.',
-        previewStyle: { background: 'rgba(253, 224, 71, 0.15)', boxShadow: 'inset 0 0 50px rgba(253, 186, 116, 0.4)' }
+        desc: 'La luz cálida asciende gradualmente hacia tonos neutros, estimulando el despertar fisiológico.',
+        previewStyle
       };
-    } else if (hour >= 10 && hour < 15) {
+    } else if (hour < 15) {
       return {
         label: 'Mediodía / Enfoque',
-        temp: '5500 K° - 6500 K°',
+        kelvin,
+        temp: `${kelvin} K`,
         biological: 'Máximo nivel de Cortisol. Alta concentración, agudeza visual y estimulación cognitiva.',
         color: 'from-sky-100 to-sky-200/30',
         textColor: 'text-sky-800',
         icon: <Sun size={24} className="text-amber-400" />,
         desc: 'Luz blanca fría de alta intensidad que imita el cielo despejado. Ideal para entornos de alta productividad.',
-        previewStyle: { background: 'rgba(224, 242, 254, 0.25)', boxShadow: 'inset 0 0 50px rgba(186, 230, 253, 0.5)' }
+        previewStyle
       };
-    } else if (hour >= 15 && hour < 19) {
+    } else {
       return {
         label: 'Atardecer / Transición',
-        temp: '3000 K° - 2700 K°',
+        kelvin,
+        temp: `${kelvin} K`,
         biological: 'Disminución de Cortisol. Preparación del cuerpo para el reposo nocturno.',
         color: 'from-orange-100 to-orange-200/40',
         textColor: 'text-orange-800',
         icon: <Sun size={24} className="text-orange-500" />,
-        desc: 'Luz cálida y suave. Los tonos ámbar reducen la fatiga ocular y favorecen la relajación mental.',
-        previewStyle: { background: 'rgba(254, 215, 170, 0.2)', boxShadow: 'inset 0 0 50px rgba(251, 146, 60, 0.3)' }
-      };
-    } else {
-      return {
-        label: 'Noche / Descanso (Fase Melatonina)',
-        temp: '2200 K° - 1800 K°',
-        biological: 'Secreción activa de Melatodina (Hormona del Sueño). Regeneración celular profunda.',
-        color: 'from-indigo-950/20 to-indigo-900/10',
-        textColor: 'text-night-accent',
-        icon: <Moon size={24} className="text-indigo-400" />,
-        desc: 'Luz ámbar ultra cálida indirecta. Cero emisiones de luz azul para asegurar la calidad del ciclo de sueño.',
-        previewStyle: { background: 'rgba(49, 46, 129, 0.08)', boxShadow: 'inset 0 0 50px rgba(30, 27, 75, 0.2)' }
+        desc: 'La luz desciende hacia tonos ámbar que reducen la fatiga ocular y favorecen la relajación mental.',
+        previewStyle
       };
     }
   };
@@ -93,13 +124,16 @@ export default function Nosotros() {
           <div className="space-y-6">
             <span className="font-sans text-xs uppercase tracking-widest text-primary font-bold block">Filosofía</span>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-on-surface">
-              Human Centric Lighting (HCL)
+              Iluminación con sentido
             </h2>
             <p className="font-sans text-base sm:text-lg text-on-surface-variant leading-relaxed">
-              En K° STUDIO, entendemos que la luz no es solo funcional; es biológica. Nuestro enfoque se basa en cómo la iluminación afecta el ritmo circadiano, el estado de ánimo y la salud cognitiva.
+              En K°studio creemos que la luz es el lenguaje silencioso de la arquitectura y el diseño de interiores. Por eso diseñamos con base en el ritmo circadiano y el comportamiento natural de la luz, integrando ciencia, tecnología y arquitectura en cada proyecto.
             </p>
             <p className="font-sans text-base sm:text-lg text-on-surface-variant leading-relaxed">
-              Diseñamos entornos que respiran, adaptándose a las necesidades naturales del ser humano, creando armonía entre la arquitectura y quienes la habitan.
+              No diseñamos únicamente para iluminar: diseñamos para emocionar, orientar y dar identidad a cada espacio, cuidando la salud de quienes lo habitan y el planeta que compartimos.
+            </p>
+            <p className="font-sans text-base sm:text-lg text-on-surface-variant leading-relaxed italic">
+              Porque la mejor iluminación no es la que más se nota, sino la que transforma la manera en que un lugar se vive.
             </p>
           </div>
 
@@ -118,10 +152,6 @@ export default function Nosotros() {
               <p className="font-sans text-[10px] sm:text-xs text-on-primary-container font-semibold uppercase tracking-widest">
                 Años de Innovación
               </p>
-            </div>
-            {/* Official Stacked Brand Logo Emblem */}
-            <div className="absolute -bottom-10 -right-6 hidden sm:block z-20 transform hover:scale-105 transition-transform duration-300">
-              <Logo variant="stacked" height={90} />
             </div>
           </div>
         </div>
@@ -189,15 +219,20 @@ export default function Nosotros() {
             {/* Slider Control */}
             <div className="space-y-4">
               <div className="flex justify-between text-xs font-semibold uppercase tracking-wider text-outline">
-                <span>06:00 Amanecer</span>
+                <span>02:00</span>
+                <span>07:00 Amanecer</span>
                 <span>12:00 Mediodía</span>
                 <span>18:00 Atardecer</span>
-                <span>22:00 Noche</span>
+                <span>23:00 Noche</span>
               </div>
+              <div
+                className="w-full h-2 rounded-full"
+                style={{ background: 'linear-gradient(90deg, #5c4a2e 0%, #c8842a 14%, #f0b429 19%, #e8d8b0 26%, #cfe3f5 38%, #a8cdf0 48%, #cfe3f5 62%, #e8d8b0 71%, #f0b429 81%, #c8842a 86%, #5c4a2e 100%)' }}
+              />
               <input
                 type="range"
-                min="6"
-                max="22"
+                min="2"
+                max="23"
                 step="1"
                 value={circadianTime}
                 onChange={(e) => setCircadianTime(parseInt(e.target.value))}

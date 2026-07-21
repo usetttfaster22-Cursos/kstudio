@@ -1,19 +1,21 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import Logo from './Logo';
+import { useContent } from '../ContentContext';
 
 export default function Footer() {
+  const { content } = useContent();
   const aliadosEstrategicos = [
-    { name: 'Cromatica', desc: 'Diseño y Construcción' },
-    { name: '11 tuESPACIO', desc: '' },
-    { name: 'GEOMETRIC', desc: 'STUDIO' }
+    { name: 'Cromatica', desc: 'Diseño y Construcción', logoKey: 'marca_cromatica' },
+    { name: '11 tuESPACIO', desc: '', logoKey: 'marca_tuespacio' },
+    { name: 'GEOMETRIC', desc: 'STUDIO', logoKey: 'marca_geometric' }
   ];
 
   const marcasRepresentadas = [
-    { name: 'arquitelas', desc: 'telas para arquitectura' },
-    { name: 'GENERAL LIGHTING', desc: 'General Lighting Electronic Co.,Ltd.' },
-    { name: 'REEONGE', desc: 'Quality that delivers' },
-    { name: 'EMITEVER', desc: '' }
+    { name: 'arquitelas', desc: 'telas para arquitectura', logoKey: 'marca_arquitelas' },
+    { name: 'GENERAL LIGHTING', desc: 'General Lighting Electronic Co.,Ltd.', logoKey: 'marca_general_lighting' },
+    { name: 'REEONGE', desc: 'Quality that delivers', logoKey: 'marca_reeonge' },
+    { name: 'EMITEVER', desc: '', logoKey: 'marca_emitever' }
   ];
 
   return (
@@ -30,10 +32,14 @@ export default function Footer() {
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500">
               {aliadosEstrategicos.map((aliado) => (
                 <div key={aliado.name} className="flex flex-col items-center justify-center text-center">
+                  {content[aliado.logoKey] ? (
+                    <img src={content[aliado.logoKey]} alt={aliado.name} className="h-16 w-auto max-w-[180px] object-contain" />
+                  ) : (
                   <span className="font-display text-2xl font-bold tracking-widest text-on-surface uppercase">
                     {aliado.name}
                   </span>
-                  {aliado.desc && (
+                  )}
+                  {!content[aliado.logoKey] && aliado.desc && (
                     <span className="font-sans text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">
                       {aliado.desc}
                     </span>
@@ -53,10 +59,14 @@ export default function Footer() {
             <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500">
               {marcasRepresentadas.map((marca) => (
                 <div key={marca.name} className="flex flex-col items-center justify-center text-center">
+                  {content[marca.logoKey] ? (
+                    <img src={content[marca.logoKey]} alt={marca.name} className="h-14 w-auto max-w-[160px] object-contain" />
+                  ) : (
                   <span className="font-display text-xl font-bold tracking-wider text-on-surface uppercase">
                     {marca.name}
                   </span>
-                  {marca.desc && (
+                  )}
+                  {!content[marca.logoKey] && marca.desc && (
                     <span className="font-sans text-[9px] uppercase tracking-wider text-on-surface-variant mt-1">
                       {marca.desc}
                     </span>

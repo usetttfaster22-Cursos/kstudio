@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useContent } from '../ContentContext';
-import { Image, Upload, CheckCircle2, Loader2, Lock, KeyRound } from 'lucide-react';
+import { Image, Upload, CheckCircle2, Loader2, Lock, KeyRound, Plus, Trash2, Save, Briefcase } from 'lucide-react';
 
 const CMSPanel = () => {
   const { content, updateContent } = useContent();
@@ -8,6 +8,69 @@ const CMSPanel = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeKey, setActiveKey] = useState<string | null>(null);
+
+  // --- Gestor de Portafolio (lista dinámica de proyectos) ---
+  const PORTFOLIO_CATEGORIES = ['Residencial', 'Comercial', 'Corporativo'];
+  const [projects, setProjects] = useState<any[]>(() => {
+    try {
+      const parsed = JSON.parse(content.portfolio_data || '[]');
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    } catch { /* sin datos previos */ }
+    return [];
+  });
+  const [dirty, setDirty] = useState(false);
+  const [savingPortfolio, setSavingPortfolio] = useState(false);
+
+  const addProject = () => {
+    setProjects(prev => [...prev, {
+      id: 'p' + Date.now(),
+      title: 'Nuevo proyecto',
+      category: 'Residencial',
+      image: '',
+      description: ''
+    }]);
+    setDirty(true);
+  };
+
+  const removeProject = (id: string) => {
+    setProjects(prev => prev.filter(p => p.id !== id));
+    setDirty(true);
+  };
+
+  const updateProject = (id: string, field: string, value: string) => {
+    setProjects(prev => prev.map(p => p.id === id ? { ...p, [field]: value } : p));
+    setDirty(true);
+  };
+
+  const savePortfolio = async () => {
+    setSavingPortfolio(true);
+    try {
+      const apiUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api/content' : '/api/content';
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ key: 'portfolio_data', value: JSON.stringify(projects), type: 'json' })
+      });
+      if (res.status === 401) {
+        setAuthError('Token inválido. Ingrésalo de nuevo.');
+        handleLogout();
+        return;
+      }
+      if (res.ok) {
+        updateContent('portfolio_data', JSON.stringify(projects));
+        setDirty(false);
+      } else {
+        alert('Error guardando el portafolio (código ' + res.status + ')');
+      }
+    } catch {
+      alert('Error guardando el portafolio');
+    } finally {
+      setSavingPortfolio(false);
+    }
+  };
 
   // --- Puerta de acceso: token de administrador (solo en memoria) ---
   const [token, setToken] = useState<string>('');
@@ -36,6 +99,15 @@ const CMSPanel = () => {
     { key: 'servicios_img_2', label: 'Servicio: Visualización' },
     { key: 'servicios_img_3', label: 'Servicio: Diseño Visual' },
     { key: 'contacto_img', label: 'Imagen Contacto' },
+    { key: 'logo_img', label: 'Logo del sitio (toda la página)' },
+    { key: 'marca_cromatica', label: 'Marca: Cromatica' },
+    { key: 'marca_tuespacio', label: 'Marca: 11 tuESPACIO' },
+    { key: 'marca_geometric', label: 'Marca: Geometric Studio' },
+    { key: 'marca_arquitelas', label: 'Marca: Arquitelas' },
+    { key: 'marca_general_lighting', label: 'Marca: General Lighting' },
+    { key: 'marca_reeonge', label: 'Marca: Reeonge' },
+    { key: 'marca_emitever', label: 'Marca: Emitever' },
+    { key: 'metodologia_analisis_img', label: 'Metodología: Imagen Análisis' },
     { key: 'aliado_tensolight_logo', label: 'Aliado: Logo TENSOLIGHT' },
     { key: 'aliado_tensolight_estetica_img1', label: 'Aliado: Belleza Estética - Img 1' },
     { key: 'aliado_tensolight_estetica_img2', label: 'Aliado: Belleza Estética - Img 2' },
@@ -64,9 +136,10 @@ const CMSPanel = () => {
     setUploading(activeKey);
     setSuccess(null);
 
+    const isPortfolio = activeKey.startsWith('portfolio:');
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('key', activeKey);
+    if (!isPortfolio) formData.append('key', activeKey);
 
     try {
       const apiUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api/upload' : '/api/upload';
@@ -88,7 +161,12 @@ const CMSPanel = () => {
 
       if (response.ok) {
         const data = await response.json();
-        updateContent(activeKey, data.url);
+        if (isPortfolio) {
+          const projId = activeKey.split(':')[1];
+          updateProject(projId, 'image', data.url);
+        } else {
+          updateContent(activeKey, data.url);
+        }
         setSuccess(activeKey);
         setTimeout(() => setSuccess(null), 3000);
       } else {
@@ -209,6 +287,105 @@ const CMSPanel = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* ==================== GESTOR DE PORTAFOLIO ==================== */}
+      <div className="border-b border-outline-variant pb-2 pt-4">
+        <h4 className="font-display font-semibold text-sm text-primary uppercase tracking-wider flex items-center gap-2">
+          <Briefcase size={14} /> Portafolio de Proyectos
+        </h4>
+        <p className="text-xs text-on-surface-variant mt-1">
+          Agrega, edita o elimina proyectos. Recuerda presionar «Guardar portafolio» al terminar.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {projects.length === 0 && (
+          <p className="text-xs text-outline italic">
+            Aún no hay proyectos personalizados: la página muestra los 3 de ejemplo. Agrega el primero.
+          </p>
+        )}
+
+        {projects.map((proj) => (
+          <div key={proj.id} className="p-3 bg-surface border border-outline-variant space-y-3">
+            <div className="flex gap-3">
+              <div className="h-20 w-20 shrink-0 bg-surface-variant overflow-hidden border border-outline-variant/40">
+                {proj.image ? (
+                  <img src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-outline">
+                    <Image size={20} />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 space-y-2 min-w-0">
+                <input
+                  type="text"
+                  value={proj.title}
+                  onChange={(e) => updateProject(proj.id, 'title', e.target.value)}
+                  placeholder="Título del proyecto"
+                  className="w-full px-2 py-1.5 text-xs bg-surface-bright border border-outline-variant focus:border-primary outline-none text-on-surface"
+                />
+                <select
+                  value={proj.category}
+                  onChange={(e) => updateProject(proj.id, 'category', e.target.value)}
+                  className="w-full px-2 py-1.5 text-xs bg-surface-bright border border-outline-variant focus:border-primary outline-none text-on-surface"
+                >
+                  {PORTFOLIO_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <textarea
+              value={proj.description}
+              onChange={(e) => updateProject(proj.id, 'description', e.target.value)}
+              placeholder="Descripción breve del proyecto"
+              rows={2}
+              className="w-full px-2 py-1.5 text-xs bg-surface-bright border border-outline-variant focus:border-primary outline-none text-on-surface resize-none"
+            />
+
+            <div className="flex justify-between items-center">
+              <button
+                onClick={() => handleFileClick('portfolio:' + proj.id)}
+                disabled={uploading === 'portfolio:' + proj.id}
+                className="text-xs bg-primary text-on-primary px-3 py-1.5 flex items-center gap-1 hover:bg-primary/90 transition-colors disabled:opacity-50"
+              >
+                {uploading === 'portfolio:' + proj.id ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : success === 'portfolio:' + proj.id ? (
+                  <CheckCircle2 size={12} className="text-green-300" />
+                ) : (
+                  <Upload size={12} />
+                )}
+                {proj.image ? 'Cambiar imagen' : 'Subir imagen'}
+              </button>
+              <button
+                onClick={() => removeProject(proj.id)}
+                className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
+                title="Eliminar este proyecto"
+              >
+                <Trash2 size={12} /> Eliminar
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div className="flex gap-2">
+          <button
+            onClick={addProject}
+            className="flex-1 text-xs border border-dashed border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary px-3 py-2 flex items-center justify-center gap-1 transition-colors"
+          >
+            <Plus size={13} /> Agregar proyecto
+          </button>
+          <button
+            onClick={savePortfolio}
+            disabled={!dirty || savingPortfolio}
+            className="flex-1 text-xs bg-primary text-on-primary px-3 py-2 flex items-center justify-center gap-1 hover:bg-primary/90 transition-colors disabled:opacity-40"
+          >
+            {savingPortfolio ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
+            {dirty ? 'Guardar portafolio' : 'Guardado'}
+          </button>
+        </div>
       </div>
     </div>
   );

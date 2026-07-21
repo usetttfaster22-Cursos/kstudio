@@ -29,12 +29,16 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-on-surface">
-              Iluminación y bienestar con <span className="text-primary block sm:inline">sentido humano</span>
+            <span className="font-sans text-sm uppercase tracking-widest text-primary font-bold block">
+              K°studio
+            </span>
+
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight text-on-surface">
+              La ciencia de la luz al servicio de <span className="text-primary">las personas y el medio ambiente</span>.
             </h1>
 
             <p className="font-sans text-base sm:text-lg text-on-surface-variant max-w-lg leading-relaxed">
-              Transformamos espacios a través de la Neuroiluminación, fusionando ciencia y estética para mejorar la calidad de vida y el rendimiento humano.
+              Integramos el diseño de iluminación circadiana a la arquitectura y el interiorismo, creando espacios confortables, saludables y amigables con el medio ambiente.
             </p>
           </motion.div>
 

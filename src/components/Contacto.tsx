@@ -219,7 +219,7 @@ export default function Contacto({ onSuccessInquiry }: ContactoProps) {
                     Síguenos en Instagram
                   </h3>
                   <p className="font-mono text-xs text-on-surface-variant">
-                    @k_studio_lighting
+                    @kstudio_light
                   </p>
                 </div>
                 <Instagram size={20} className="text-primary" />
@@ -256,7 +256,7 @@ export default function Contacto({ onSuccessInquiry }: ContactoProps) {
                     Oficina Central
                   </p>
                   <p className="font-sans text-sm text-on-surface-variant leading-relaxed">
-                    Panamá, Ciudad de Panamá. Calle 50, Edificio Global Plaza.
+                    Panamá, Ciudad de Panamá. Av. Calle 1, El Carmen, Casa 80, Edificio Dimitra P3.
                   </p>
                 </div>
               </div>

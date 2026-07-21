@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Project } from '../types';
+import { useContent } from '../ContentContext';
 
 export default function Portafolio() {
   const [filter, setFilter] = useState<string>('Todos');
+  const { content } = useContent();
 
-  const projects: Project[] = [
+  const defaultProjects: Project[] = [
     {
       id: 'p1',
       title: 'Penthouse Los Olivos',
@@ -16,20 +18,29 @@ export default function Portafolio() {
     {
       id: 'p2',
       title: 'Lobby Hotel Grand Luxe',
-      category: 'Hotelería',
+      category: 'Comercial',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDWtXabRHtoO2oE5HwGA_OlF9vOCa4hoTMHOb3dieOW_WgaBT9yXQJgQvOUmCdXw1MsacznutrIj28KrRWid1UTKejGs__vCehHZ3-nsP_W9-eBd8a0nCy62LMEo7bJhpk987TvK2145gsvCM4HtBd5Ix39AA6x5hlBKpE4tLO66X1fMNSltwtbDCK671qC66rf8edkvPLM7DoTKF0xfsIzDhYNnGuixnb2M1DVirBvD6PlAyVwjkc1_CgVpr0iGDkgx-1_JGSLiu8',
       description: 'Ambiente de recepción exclusivo con orbes de luz dorada suspendidos, complementados con acentuaciones sobre maderas nobles.'
     },
     {
       id: 'p3',
       title: 'Galería de Arte Contemporáneo',
-      category: 'Público',
+      category: 'Corporativo',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFgJpH7dTSCMFzDMOINPTiPH03OhTwCTRMTVreLYZGq9tBQbYzJMqOJ-OO_2FIAGFHCRMGkHdoH6HtyRTBRQEhFaOXAU1ozKSX57jCrKZqdGW6xzmoHn4K_4LsRbJ4XgbwlNVIkXNSzRYCbqS6Rdph76MVj6_G7TpJpFYVuhqJuI7-g4UrfeRlDgign_kIaAbBhO_VunF6T_LMTWEJo_WvfnoFqngME0uIFn1kATswHsXde7pzKSrCeVNImej0gXiyk9M-sgfcwWQ',
       description: 'Luz difusa lineal rítmica en techos, diseñada para una perfecta reproducción cromática (CRI > 98) sin deslumbramientos.'
     }
   ];
 
-  const categories = ['Todos', 'Residencial', 'Hotelería', 'Público'];
+  // Proyectos gestionados desde el panel CMS (clave portfolio_data); si no hay, se usan los de ejemplo
+  let projects: Project[] = defaultProjects;
+  try {
+    if (content.portfolio_data) {
+      const parsed = JSON.parse(content.portfolio_data);
+      if (Array.isArray(parsed) && parsed.length > 0) projects = parsed;
+    }
+  } catch { /* JSON inválido: se mantienen los de ejemplo */ }
+
+  const categories = ['Todos', ...Array.from(new Set(projects.map(p => p.category)))];
 
   const filteredProjects = filter === 'Todos'
     ? projects

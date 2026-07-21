@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useContent } from '../ContentContext';
 import { 
   FileText, 
   Compass, 
@@ -22,15 +23,16 @@ interface MetodologiaProps {
 }
 
 export default function Metodologia({ activeStep, onStepChange }: MetodologiaProps) {
+  const { content } = useContent();
   // 1. Step Metadata
   const steps = [
     {
       number: '01',
       name: 'Análisis',
       slogan: 'Diagnóstico espacial, lumínico y circadiano',
-      description: 'Evaluación exhaustiva del espacio arquitectónico, necesidades específicas del usuario y objetivos biológicos/circadianos del proyecto. Analizamos cómo la luz natural incide a lo largo de las estaciones y cómo la iluminación artificial influirá en la neurobiología de los ocupantes.',
+      description: 'Evaluación exhaustiva del espacio arquitectónico, necesidades específicas del usuario y objetivos biológicos/circadianos del proyecto, ya sea residencial, comercial, corporativo o de oficinas. Analizamos cómo la luz natural incide a lo largo de las estaciones y cómo la iluminación artificial influirá en la neurobiología de los ocupantes.',
       deliverables: [
-        'Análisis de Ritmo Circadiano y Cronotipo del cliente.',
+        'Análisis de Ritmo Circadiano y perfil de uso de los ocupantes.',
         'Estudio preliminar de iluminación natural y asoleamiento.',
         'Auditoría y levantamiento fotométrico de luminarias existentes.',
         'Diagnóstico cuantitativo de luxes requeridos por área.'
@@ -40,11 +42,11 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
       number: '02',
       name: 'Conceptualización',
       slogan: 'Modelado tridimensional de emociones y atmósferas',
-      description: 'Desarrollo de la narrativa lumínica del espacio mediante esquemas visuales y modelos tridimensionales interactivos. Diseñamos el juego de luces y sombras, seleccionamos las temperaturas de color ideales (K°) y creamos contrastes para estructurar la jerarquía arquitectónica y emocional.',
+      description: 'Desarrollo de la narrativa lumínica del espacio mediante esquemas visuales y modelos tridimensionales interactivos. Diseñamos el juego de luces y sombras, seleccionamos las temperaturas de color ideales (medidas en Kelvin) y creamos contrastes para estructurar la jerarquía arquitectónica y emocional.',
       deliverables: [
         'Moodboard conceptual y paleta de temperaturas lumínicas.',
         'Esquema preliminar de zonificación de luz y jerarquía visual.',
-        'Renders 3D conceptuales simulando el comportamiento de la luz.',
+        'Representación gráfica de la luz en plano.',
         'Propuesta inicial de tipologías de luminarias y efectos ópticos.'
       ]
     },
@@ -394,63 +396,21 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                     >
                       <div className="space-y-2">
                         <h4 className="font-display text-sm font-bold text-black uppercase tracking-wider flex items-center gap-2">
-                          <Activity size={14} className="text-amber-600 animate-pulse" />
-                          Simulador Biológico Circadiano
+                          <Activity size={14} className="text-amber-600" />
+                          Análisis Lumínico y Circadiano
                         </h4>
                         <p className="font-sans text-[11px] text-[#777]">
-                          Desliza la barra para ver cómo cambian el asoleamiento y la respuesta hormonal humana a lo largo de las horas del día.
+                          Estudiamos el espacio, la luz natural y el ritmo biológico de los ocupantes para fundamentar cada decisión de diseño.
                         </p>
                       </div>
 
-                      {/* Display window reflecting the slider hour */}
-                      <div className={`p-4 border border-outline-variant/40 bg-gradient-to-br ${circadian.colorClass} transition-all duration-700 text-white shadow-inner flex flex-col justify-between min-h-[140px] relative rounded-xs`}>
-                        {/* Dimming overlay for night hours */}
-                        {circadianHour >= 20 && <div className="absolute inset-0 bg-black/45 rounded-xs" />}
-                        
-                        <div className="relative z-10 flex justify-between items-start">
-                          <span className="font-display text-3xl font-bold tracking-tighter">
-                            {circadianHour}:00 {circadianHour >= 12 ? 'PM' : 'AM'}
-                          </span>
-                          <span className="font-sans text-[9px] uppercase tracking-widest font-bold bg-white/20 px-2.5 py-1 backdrop-blur-md rounded-full">
-                            {circadianHour >= 18 || circadianHour < 6 ? 'Ciclo Nocturno' : 'Ciclo Diurno'}
-                          </span>
-                        </div>
-
-                        <div className="relative z-10 space-y-1 pt-6">
-                          <div className="font-mono text-[10px] tracking-wider opacity-90">
-                            Fórmula Lumínica: <span className="font-bold underline">{circadian.temp}</span>
-                          </div>
-                          <div className="font-sans text-xs flex flex-wrap gap-x-3 opacity-80 font-light">
-                            <span>Cortisol: <strong>{circadian.cortisol}</strong></span>
-                            <span>•</span>
-                            <span>Melatonina: <strong>{circadian.melatonin}</strong></span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Control Slider */}
-                      <div className="space-y-2 pt-2">
-                        <div className="flex justify-between text-[11px] font-sans font-bold text-on-surface">
-                          <span>Amanecer (6 AM)</span>
-                          <span>Mediodía (12 PM)</span>
-                          <span>Noche (11 PM)</span>
-                        </div>
-                        <input
-                          type="range"
-                          min={6}
-                          max={23}
-                          value={circadianHour}
-                          onChange={(e) => setCircadianHour(parseInt(e.target.value))}
-                          className="w-full h-1 bg-outline-variant/60 rounded-lg appearance-none cursor-pointer accent-primary"
+                      <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white">
+                        <img
+                          className="w-full h-auto object-cover"
+                          referrerPolicy="no-referrer"
+                          alt="Equipo de diseño analizando la iluminación y el asoleamiento de un proyecto"
+                          src={content.metodologia_analisis_img || 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop'}
                         />
-                      </div>
-
-                      {/* Action advice */}
-                      <div className="p-3.5 bg-white border border-outline-variant/40 rounded-xs">
-                        <p className="font-sans text-xs text-on-surface-variant leading-relaxed">
-                          <strong className={circadian.textColor}>Recomendación K°: </strong>
-                          {circadian.advice}
-                        </p>
                       </div>
                     </motion.div>
                   )}
@@ -468,7 +428,7 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                           Zonificación de Temperatura & Brillo
                         </h4>
                         <p className="font-sans text-[11px] text-[#777]">
-                          Prueba diferentes K° (Kelvin) para ver cómo afecta el tono y la sensación espacial.
+                          Prueba diferentes temperaturas de color (Kelvin) para ver cómo afecta el tono y la sensación espacial.
                         </p>
                       </div>
 
@@ -495,7 +455,7 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                       {/* Kelvin Control Buttons */}
                       <div className="space-y-3 pt-1">
                         <span className="font-sans text-[10px] uppercase tracking-widest font-bold text-on-surface-variant block">
-                          Selección de Temperatura (K°):
+                          Selección de Temperatura (Kelvin):
                         </span>
                         <div className="grid grid-cols-4 gap-2">
                           {[2200, 3000, 4000, 6000].map((k) => (

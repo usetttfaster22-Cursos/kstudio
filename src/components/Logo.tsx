@@ -1,4 +1,5 @@
 import React from 'react';
+import { useContent } from '../ContentContext';
 
 interface LogoProps {
   variant?: 'navbar' | 'stacked' | 'symbol';
@@ -7,6 +8,19 @@ interface LogoProps {
 }
 
 export default function Logo({ variant = 'navbar', className = '', height = 40 }: LogoProps) {
+  const { content } = useContent();
+
+  if (content.logo_img) {
+    return (
+      <img
+        src={content.logo_img}
+        alt="K°studio"
+        style={{ height: `${height}px`, width: 'auto' }}
+        className={`inline-block align-middle select-none ${className}`}
+      />
+    );
+  }
+
   // SVG gradients and filter setup
   const glowFilterId = "circadian-glow";
   const gradId = "circadian-gradient";
