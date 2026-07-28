@@ -34,10 +34,10 @@ export default function Hero() {
             </span>
 
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight text-on-surface">
-              La ciencia de la luz al servicio de <span className="text-primary">las personas y el medio ambiente</span>.
+              La ciencia de la luz al servicio de las personas y el medio ambiente.
             </h1>
 
-            <p className="font-sans text-base sm:text-lg text-on-surface-variant max-w-lg leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-on-surface max-w-lg leading-relaxed font-medium">
               Integramos el diseño de iluminación circadiana a la arquitectura y el interiorismo, creando espacios confortables, saludables y amigables con el medio ambiente.
             </p>
           </motion.div>

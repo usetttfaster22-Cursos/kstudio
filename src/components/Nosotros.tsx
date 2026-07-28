@@ -138,9 +138,9 @@ export default function Nosotros() {
           </div>
 
           <div className="relative">
-            <div className="aspect-square bg-pearl-grey overflow-hidden relative border border-outline-variant/60 shadow-lg">
+            <div className="aspect-square bg-white overflow-hidden relative border border-outline-variant/60 shadow-lg">
               <img
-                className="object-cover w-full h-full opacity-90 transition-transform duration-700 hover:scale-105"
+                className="object-contain w-full h-full opacity-90 transition-transform duration-700 hover:scale-105"
                 referrerPolicy="no-referrer"
                 alt="Reflejo del iris humano con luz arquitectónica"
                 src={content.nosotros_img || "https://lh3.googleusercontent.com/aida-public/AB6AXuCLLrSaXW-ISN_bLHbIi8-bj4V9chdROBNlgOwqZ0IvHe5a9qgYMxAkOeN1PUPf7uP7g44sv7uf0yBClDm2UcAParHomXTKR1tAbINFhlBuA20O8VxBGR4G3l-bXIWun14fxU8ROm255ijyMZjvlZz8WT6f8mWito-nO1pqNoZIJItOB5hTAJwNq8TxfQdxjOQcMygchVGIqlwkQiwWFD9nR0BzWfMTxraQ3vFdigGYEVUjdSc2ygaBGNWL4CRRsrRBgYDRqZNcEn0"}
@@ -170,7 +170,7 @@ export default function Nosotros() {
             <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/40 group-hover:bg-primary transition-colors" />
             <h3 className="font-display text-xl sm:text-2xl font-bold mb-4 text-primary">Visión</h3>
             <p className="text-on-surface-variant font-sans text-sm sm:text-base leading-relaxed">
-              Ser el referente latinoamericano en el diseño de iluminación centrado en el ser humano, transformando la percepción de la arquitectura a través de la luz.
+              Ser el referente en el diseño de iluminación centrado en el ser humano, transformando la percepción de la arquitectura a través de la luz.
             </p>
           </div>
         </div>

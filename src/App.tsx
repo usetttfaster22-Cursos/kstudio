@@ -31,7 +31,7 @@ export default function App() {
       role: 'Co-Director / Lighting Designer',
       bio: 'Especialista en Neuroiluminación con más de 15 años de trayectoria transformando espacios comerciales y hoteleros en experiencias multisensoriales que potencian el bienestar y el confort.',
       image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600&auto=format&fit=crop',
-      email: 'm.gil@kstudio.com'
+      email: 'mauricio.gil@kstudio-light.com'
     },
     {
       id: 'dg5',
@@ -39,7 +39,7 @@ export default function App() {
       role: 'Co-Director / Arquitecto',
       bio: 'Arquitecto visionario enfocado en la integración de la luz como elemento estructural y narrativo, garantizando una armonía total entre la forma espacial y la función lumínica.',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop',
-      email: 'd.eslava@kstudio.com'
+      email: 'info@kstudio-light.com'
     },
     {
       id: 'dg1',
@@ -47,7 +47,7 @@ export default function App() {
       role: 'Arquitecto / Lighting Designer',
       bio: 'Arquitecto y diseñador de iluminación con 18 años de experiencia especializado en el uso del software Dialux Evo para la presentación y evaluación de sistemas lumínicos. En búsqueda siempre de formas innovadoras para comunicar el importante rol de la iluminación en la arquitectura y el ser humano.',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBYHxW_aj56TRlSqsJJdImi8gNC1M3OtfYuNT1MNY0PRCyCY8qETHjthMLmsnJWguDCdNrT1Jt3PmQS4wQQtVrROxA3oYJHAQRjhxjSCYe6Hu-XfUSu3HGkRGQspaUW110KWu4IaK1lf2w6NvfhYnm-nTqqvBcJ0rg9GnD9GQOpRqDjlmtSudCH-14UckTBddmcFUcg262h3NJLYv6rG0lR18BSOd6caAz0ESdeJ8zurkyKJBdpb7Gb6fSXcpwj_TlZOSE7Od9IMaA',
-      email: 'j.carlos@kstudio.com'
+      email: 'info@kstudio-light.com'
     },
     {
       id: 'dg2',
@@ -55,15 +55,15 @@ export default function App() {
       role: 'Arquitecta / Interior Designer | Architectural Visualizer',
       bio: 'Arquitecta e ilustradora arquitectónica con experiencia en diseño arquitectónico, interiorismo y visualización arquitectónica. Especializada en la creación de propuestas funcionales y estéticamente cuidadas, con enfoque en la comunicación visual y el desarrollo integral de proyectos.',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvlGusI0y7C4eE8FV3quthZNvYHSv_0gESzlEStyB9U_o6P8_-hDpjWlBbuzFB6MGLW6zKNkb0u6nD2hICYGeq4qwFa4LlTwrpAkTebuQwvtejTV0QudBWYnQGTWUEVUXQJ5wxwOuMJ-tV0nrKmvxPfJVNc9FIzL7eQzcZz-oHPd_P4Xa20R-cXW03LwmSI0GCnXPqoapsN0MyB_3HeZjQK3J_Kfv-5_bRk30512n47VtkMSPP6FqB6iQIQPvtemK36reAOHIb_XQ',
-      email: 'p.galvez@kstudio.com'
+      email: 'info@kstudio-light.com'
     },
     {
       id: 'dg3',
-      name: 'Ana D. Edezma',
+      name: 'Ana Ledezma',
       role: 'Diseñadora Gráfica, Diseño Visual & Branding',
       bio: 'Diseñadora gráfica y de comunicación visual con más de 20 años de experiencia, especialista en diseño editorial, gran formato y soluciones creativas que conectan marcas con personas.',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop',
-      email: 'a.edezma@kstudio.com'
+      email: 'info@kstudio-light.com'
     }
   ];
 

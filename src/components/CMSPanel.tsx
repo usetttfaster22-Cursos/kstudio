@@ -101,6 +101,7 @@ const CMSPanel = () => {
     { key: 'contacto_img', label: 'Imagen Contacto' },
     { key: 'logo_img', label: 'Logo del sitio (toda la página)' },
     { key: 'marca_cromatica', label: 'Marca: Cromatica' },
+    { key: 'marca_aliado4', label: 'Marca: Nuevo aliado' },
     { key: 'marca_tuespacio', label: 'Marca: 11 tuESPACIO' },
     { key: 'marca_geometric', label: 'Marca: Geometric Studio' },
     { key: 'marca_arquitelas', label: 'Marca: Arquitelas' },
@@ -108,6 +109,12 @@ const CMSPanel = () => {
     { key: 'marca_reeonge', label: 'Marca: Reeonge' },
     { key: 'marca_emitever', label: 'Marca: Emitever' },
     { key: 'metodologia_analisis_img', label: 'Metodología: Imagen Análisis' },
+    { key: 'metodologia_desarrollo_img1', label: 'Metodología: Desarrollo Técnico (imagen 1)' },
+    { key: 'metodologia_desarrollo_img2', label: 'Metodología: Desarrollo Técnico (imagen 2)' },
+    { key: 'metodologia_entregables_img_01', label: 'Metodología: Entregables — Fase 01 Análisis' },
+    { key: 'metodologia_entregables_img_02', label: 'Metodología: Entregables — Fase 02 Conceptualización' },
+    { key: 'metodologia_entregables_img_03', label: 'Metodología: Entregables — Fase 03 Desarrollo Técnico' },
+    { key: 'metodologia_entregables_img_04', label: 'Metodología: Entregables — Fase 04 Implementación' },
     { key: 'aliado_tensolight_logo', label: 'Aliado: Logo TENSOLIGHT' },
     { key: 'aliado_tensolight_estetica_img1', label: 'Aliado: Belleza Estética - Img 1' },
     { key: 'aliado_tensolight_estetica_img2', label: 'Aliado: Belleza Estética - Img 2' },
@@ -121,7 +128,7 @@ const CMSPanel = () => {
     { key: 'designer_dg5', label: 'Equipo: Diego Eslava' },
     { key: 'designer_dg1', label: 'Equipo: Jean Carlos C.' },
     { key: 'designer_dg2', label: 'Equipo: Polaris Gálvez' },
-    { key: 'designer_dg3', label: 'Equipo: Ana D. Edezma' },
+    { key: 'designer_dg3', label: 'Equipo: Ana Ledezma' },
   ];
 
   const handleFileClick = (key: string) => {

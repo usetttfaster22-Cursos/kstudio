@@ -97,10 +97,10 @@ export default function Portafolio() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
                 key={proj.id}
-                className="group relative overflow-hidden bg-pearl-grey aspect-[4/5] rounded-none border border-outline-variant/30 hover:shadow-[0_0_40px_rgba(212,175,55,0.06)] hover:border-primary/40 transition-all duration-500 cursor-pointer"
+                className="group relative overflow-hidden bg-pearl-grey aspect-[4/3] rounded-none border border-outline-variant/30 hover:shadow-[0_0_40px_rgba(212,175,55,0.06)] hover:border-primary/40 transition-all duration-500 cursor-pointer"
               >
                 <img
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                   referrerPolicy="no-referrer"
                   alt={proj.title}
                   src={proj.image}

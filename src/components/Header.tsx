@@ -61,7 +61,7 @@ export default function Header({
             href="#"
             className="transition-opacity hover:opacity-90 flex items-center"
           >
-            <Logo variant="navbar" height={42} />
+            <Logo variant="navbar" height={60} />
           </a>
 
           {/* Desktop Navigation */}

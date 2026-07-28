@@ -8,7 +8,8 @@ export default function Footer() {
   const aliadosEstrategicos = [
     { name: 'Cromatica', desc: 'Diseño y Construcción', logoKey: 'marca_cromatica' },
     { name: '11 tuESPACIO', desc: '', logoKey: 'marca_tuespacio' },
-    { name: 'GEOMETRIC', desc: 'STUDIO', logoKey: 'marca_geometric' }
+    { name: 'GEOMETRIC', desc: 'STUDIO', logoKey: 'marca_geometric' },
+    { name: 'KARINA TRUJILLO', desc: '', logoKey: 'marca_aliado4' }
   ];
 
   const marcasRepresentadas = [
@@ -82,7 +83,7 @@ export default function Footer() {
       {/* Main Footer Section */}
       <div className="flex flex-col md:flex-row justify-between items-center px-6 sm:px-12 py-16 max-w-[1280px] mx-auto w-full gap-8">
         <div className="text-center md:text-left space-y-4">
-          <Logo variant="navbar" height={42} />
+          <Logo variant="navbar" height={50} />
           <p className="font-sans text-xs text-on-surface-variant">
             © {new Date().getFullYear()} K° STUDIO. Neuroiluminación y Arquitectura.
           </p>

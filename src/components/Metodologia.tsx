@@ -333,20 +333,16 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                   {currentStepData.description}
                 </p>
 
-                {/* Deliverables Block */}
-                <div className="space-y-4 pt-4 border-t border-outline-variant/30">
-                  <h4 className="font-display text-xs uppercase tracking-[0.25em] font-bold text-on-surface flex items-center gap-2">
-                    <FileText size={14} className="text-primary" />
-                    Entregables y Resultados Clave:
-                  </h4>
-                  <ul className="grid grid-cols-1 gap-3 pl-1">
-                    {currentStepData.deliverables.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-on-surface-variant leading-relaxed font-light">
-                        <Check size={14} className="text-primary mt-0.5 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Deliverables Block: imagen gestionable desde el panel CMS, una por fase */}
+                <div className="space-y-3 pt-4 border-t border-outline-variant/30">
+                  <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white h-56">
+                    <img
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                      alt={`Entregables de la fase ${currentStepData.name}`}
+                      src={content[`metodologia_entregables_img_${currentStepData.number}`] || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop'}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -404,9 +400,9 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                         </p>
                       </div>
 
-                      <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white">
+                      <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white h-56">
                         <img
-                          className="w-full h-auto object-cover"
+                          className="w-full h-full object-cover"
                           referrerPolicy="no-referrer"
                           alt="Equipo de diseño analizando la iluminación y el asoleamiento de un proyecto"
                           src={content.metodologia_analisis_img || 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop'}
@@ -503,95 +499,35 @@ export default function Metodologia({ activeStep, onStepChange }: MetodologiaPro
                       <div className="space-y-2">
                         <h4 className="font-display text-sm font-bold text-black uppercase tracking-wider flex items-center gap-2">
                           <Sliders size={14} className="text-primary" />
-                          Simulador Fotométrico Dialux Evo
+                          Desarrollo Técnico
                         </h4>
                         <p className="font-sans text-[11px] text-[#777]">
-                          Configura la cantidad y potencia de las luminarias para evaluar si cumple con las normativas lux.
+                          Planos ejecutivos, cálculos fotométricos de precisión y especificación técnica listos para licitación e instalación.
                         </p>
                       </div>
 
-                      {/* Calculations Panel */}
-                      <div className="bg-white p-4 border border-outline-variant/40 space-y-3.5 shadow-sm rounded-xs">
-                        <div className="flex justify-between items-center text-xs border-b border-outline-variant/30 pb-2">
-                          <span className="font-sans text-on-surface-variant font-medium">Espacio Seleccionado:</span>
-                          <select
-                            value={roomType}
-                            onChange={(e: any) => setRoomType(e.target.value)}
-                            className="bg-pearl-grey/30 border border-outline-variant/50 px-2 py-0.5 font-sans text-xs rounded-sm focus:outline-primary"
-                          >
-                            <option value="oficina">Oficina Corporativa</option>
-                            <option value="estudio">Estudio de Diseño</option>
-                            <option value="dormitorio">Dormitorio Principal</option>
-                            <option value="sala">Sala de Estar</option>
-                          </select>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white">
+                          <img
+                            className="w-full h-48 object-cover"
+                            referrerPolicy="no-referrer"
+                            alt="Plano técnico y cálculo fotométrico del proyecto"
+                            src={content.metodologia_desarrollo_img1 || 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop'}
+                          />
                         </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-1">
-                            <span className="font-sans text-[10px] text-outline uppercase block">Luminarias:</span>
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() => setFixturesCount(Math.max(1, fixturesCount - 1))}
-                                className="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-pearl-grey/30 active:scale-95"
-                              >
-                                -
-                              </button>
-                              <span className="font-mono text-sm font-bold">{fixturesCount} uds</span>
-                              <button
-                                onClick={() => setFixturesCount(Math.min(12, fixturesCount + 1))}
-                                className="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-pearl-grey/30 active:scale-95"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1">
-                            <span className="font-sans text-[10px] text-outline uppercase block">Lúmenes/ud:</span>
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() => setLumensPerFixture(Math.max(400, lumensPerFixture - 200))}
-                                className="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-pearl-grey/30 active:scale-95"
-                              >
-                                -
-                              </button>
-                              <span className="font-mono text-sm font-bold">{lumensPerFixture} lm</span>
-                              <button
-                                onClick={() => setLumensPerFixture(Math.min(2000, lumensPerFixture + 200))}
-                                className="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-pearl-grey/30 active:scale-95"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
+                        <div className="border border-outline-variant/40 overflow-hidden rounded-xs bg-white">
+                          <img
+                            className="w-full h-48 object-cover"
+                            referrerPolicy="no-referrer"
+                            alt="Especificación técnica de luminarias y sistemas de control"
+                            src={content.metodologia_desarrollo_img2 || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop'}
+                          />
                         </div>
-
-                        {/* Compute results readout */}
-                        <div className="pt-2.5 border-t border-outline-variant/30 flex justify-between items-center">
-                          <div>
-                            <span className="font-sans text-[10px] text-[#888] uppercase block">Resultado Lux Calculado:</span>
-                            <span className="font-display text-2xl font-black text-primary">
-                              {photometrics.lux} <span className="text-xs font-normal text-on-surface-variant">lx promedio</span>
-                            </span>
-                          </div>
-                          <div className="text-right">
-                            <span className="font-sans text-[10px] text-[#888] uppercase block">Objetivo de Norma:</span>
-                            <span className="font-mono text-xs font-semibold text-on-surface">
-                              {photometrics.targetLux} lx
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Assessment badge */}
-                      <div className={`p-3 border text-xs flex items-center gap-2 font-sans font-medium rounded-xs transition-colors ${photometrics.evaluationClass}`}>
-                        <div className="h-1.5 w-1.5 rounded-full bg-current animate-pulse" />
-                        <span>{photometrics.evaluation}</span>
                       </div>
                     </motion.div>
                   )}
 
-                  {activeStep === '04' && (
+                                    {activeStep === '04' && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}

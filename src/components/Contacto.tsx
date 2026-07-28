@@ -213,23 +213,31 @@ export default function Contacto({ onSuccessInquiry }: ContactoProps) {
           <div className="space-y-12">
             {/* Instagram Mockup */}
             <div className="bg-pearl-grey p-8 border border-outline-variant/45">
-              <div className="flex justify-between items-center mb-6">
+              <a
+                href="https://www.instagram.com/kstudio_light"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-between items-center mb-6 group/insta"
+              >
                 <div className="space-y-1">
-                  <h3 className="font-display text-lg font-bold text-on-surface">
+                  <h3 className="font-display text-lg font-bold text-on-surface group-hover/insta:text-primary transition-colors">
                     Síguenos en Instagram
                   </h3>
-                  <p className="font-mono text-xs text-on-surface-variant">
+                  <p className="font-mono text-xs text-on-surface-variant group-hover/insta:text-primary transition-colors">
                     @kstudio_light
                   </p>
                 </div>
                 <Instagram size={20} className="text-primary" />
-              </div>
+              </a>
 
               <div className="grid grid-cols-3 gap-2">
                 {instagramPosts.map((post) => (
-                  <div
+                  <a
                     key={post.id}
-                    className="aspect-square bg-white border border-outline-variant/30 overflow-hidden relative group cursor-pointer"
+                    href="https://www.instagram.com/kstudio_light"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="aspect-square bg-white border border-outline-variant/30 overflow-hidden relative group cursor-pointer block"
                   >
                     <img
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -240,7 +248,7 @@ export default function Contacto({ onSuccessInquiry }: ContactoProps) {
                     <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <ExternalLink size={14} className="text-white" />
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
